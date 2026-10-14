@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - V3EStore</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='registro.css') }}">
+</head>
+<body>
+<a href="{{ url_for('dashboard') }}" class="back-btn">←</a>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<div class="glass-container">
+    <div class="profile-header">
+        <div class="profile-avatar">👤</div>
+        <h1 id="profileName">{{ usuario_actual.nombre }}</h1>
+        <p id="profileEmail">{{ usuario_actual.email }}</p>
+    </div>
+
+    <div class="profile-stats">
+        <div class="stat-card">
+            <span class="stat-number" id="memberDays">{{ member_days }}</span>
+            <span class="stat-label">Días como miembro</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">1</span>
+            <span class="stat-label">Perfil activo</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Información cargada</span>
+        </div>
+    </div>
+
+    <form class="profile-form" method="post">
+        <div class="form-section">
+            <h3>Información Personal</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="profileNombre">Nombre completo</label>
+                    <input type="text" id="profileNombre" name="nombre" value="{{ usuario_actual.nombre }}">
+                </div>
+                <div class="form-group">
+                    <label for="profileDocumento">Documento</label>
+                    <input type="text" id="profileDocumento" name="documento" value="{{ usuario_actual.documento }}">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="profileEmailInput">Email</label>
+                    <input type="email" id="profileEmailInput" name="email" value="{{ usuario_actual.email }}">
+                </div>
+                <div class="form-group">
+                    <label for="profileUsuario">Usuario</label>
+                    <input type="text" id="profileUsuario" value="{{ usuario_actual.usuario }}" disabled>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="submit-btn enabled">Guardar cambios</button>
+            <a href="{{ url_for('dashboard') }}" class="secondary-btn">Volver al dashboard</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

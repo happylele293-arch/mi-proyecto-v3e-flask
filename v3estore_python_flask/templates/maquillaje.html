@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ titulo }} | V3E STORE</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .productos-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      background: #fffbe6cc;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px rgba(44,58,32,0.13);
+      padding: 36px 32px 28px 32px;
+    }
+    .productos-lista {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 32px;
+      padding: 20px 0;
+    }
+    .producto-item {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(44,58,32,0.10);
+      padding: 18px 12px 12px 12px;
+      text-align: center;
+      border: 2px solid #C8A2C8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .producto-item img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      background: #fac6cae3;
+    }
+    .producto-item h3 {
+      font-size: 1.1em;
+      color: #4B5320;
+      margin-bottom: 6px;
+    }
+    .producto-item .precio {
+      font-size: 1.1em;
+      color: #9B70A8;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo">V3E STORE</div>
+  <nav>
+    <a href="{{ url_for('index') }}">Inicio</a>
+    <a href="{{ url_for('productos') }}">Productos</a>
+    <a href="{{ url_for('ropa') }}">Ropa</a>
+    <a href="{{ url_for('maquillaje') }}">Maquillaje</a>
+    <a href="{{ url_for('skincare') }}">Skincare</a>
+    <a href="{{ url_for('registro') }}">Registro</a>
+    <a href="{{ url_for('contacto') }}">Contacto</a>
+  </nav>
+</header>
+
+<div class="productos-container">
+  <h2>{{ titulo }}</h2>
+  <div id="productosLista" class="productos-lista">
+    {% for producto in productos %}
+    <div class="producto-item">
+      <img src="{{ producto.imagen if producto.imagen else url_for('static', filename='img/placeholder-product.png') }}" alt="{{ producto.nombre }}">
+      <h3>{{ producto.nombre }}</h3>
+      <div class="precio">${{ "{:,.0f}".format(producto.precio) }}</div>
+      <p>{{ producto.descripcion or ('Producto de ' ~ titulo) }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 V3E STORE - Todos los derechos reservados</p>
+</footer>
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>

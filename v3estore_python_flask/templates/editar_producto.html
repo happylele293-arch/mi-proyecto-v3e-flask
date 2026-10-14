@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Producto | V3E STORE</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<header>
+  <div class="logo">V3E STORE</div>
+  <nav>
+    <a href="{{ url_for('productos') }}">Productos</a>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('index') }}">Inicio</a>
+  </nav>
+</header>
+
+<section class="admin-panel">
+  <h2>Editar producto</h2>
+  <form method="post">
+    <div class="admin-grid">
+      <input type="text" name="nombre" value="{{ producto.nombre }}" required>
+      <select name="categoria" required>
+        <option value="maquillaje" {% if producto.categoria == 'maquillaje' %}selected{% endif %}>Maquillaje</option>
+        <option value="ropa" {% if producto.categoria == 'ropa' %}selected{% endif %}>Ropa</option>
+        <option value="skincare" {% if producto.categoria == 'skincare' %}selected{% endif %}>Skincare</option>
+      </select>
+      <input type="number" step="0.01" name="precio" value="{{ producto.precio }}" required>
+      <input type="number" name="stock" value="{{ producto.stock }}" required>
+      <input type="text" name="imagen" value="{{ producto.imagen or '' }}">
+      <textarea name="descripcion">{{ producto.descripcion or '' }}</textarea>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn-soft">Actualizar</button>
+      <a href="{{ url_for('productos') }}" class="btn-soft">Cancelar</a>
+    </div>
+  </form>
+</section>
+</body>
+</html>

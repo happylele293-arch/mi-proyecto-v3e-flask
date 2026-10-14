@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos | V3E STORE</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<header class="animate__animated animate__fadeInDown">
+  <div class="logo">V3E STORE</div>
+  <nav>
+      <a href="{{ url_for('index') }}" class="categoria-alt">Inicio</a>
+      <a href="{{ url_for('productos') }}" class="categoria-btn">Productos</a>
+      <a href="{{ url_for('maquillaje') }}" class="categoria-btn">Maquillaje</a>
+      <a href="{{ url_for('skincare') }}" class="categoria-btn">Skincare</a>
+      <a href="{{ url_for('ropa') }}" class="categoria-btn">Ropa</a>
+      <a href="{{ url_for('registro') }}" class="categoria-alt">Registro</a>
+      {% if usuario_actual %}
+      <button id="logoutBtn" data-url="{{ url_for('logout') }}">Cerrar sesión</button>
+      {% else %}
+      <a href="{{ url_for('login') }}" class="categoria-alt">Login</a>
+      {% endif %}
+  </nav>
+</header>
+
+{% if usuario_actual %}
+<section class="admin-panel">
+  <h2>CRUD de productos</h2>
+  <form method="post" action="{{ url_for('producto_nuevo') }}">
+    <div class="admin-grid">
+      <input type="text" name="nombre" placeholder="Nombre del producto" required>
+      <select name="categoria" required>
+        <option value="">Categoría</option>
+        <option value="maquillaje">Maquillaje</option>
+        <option value="ropa">Ropa</option>
+        <option value="skincare">Skincare</option>
+      </select>
+      <input type="number" step="0.01" name="precio" placeholder="Precio" required>
+      <input type="number" name="stock" placeholder="Stock" value="10" required>
+      <input type="text" name="imagen" placeholder="Ruta imagen, ej: img/archivo.jpg">
+      <textarea name="descripcion" placeholder="Descripción"></textarea>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn-soft">Guardar producto</button>
+      <a href="{{ url_for('dashboard') }}" class="btn-soft">Ir al dashboard</a>
+    </div>
+  </form>
+</section>
+{% endif %}
+
+<div class="productos-container">
+  <h2>Todos los productos</h2>
+  <div class="table-wrap">
+    <table class="v3-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in productos %}
+        <tr>
+          <td>{{ p.id }}</td>
+          <td>{{ p.nombre }}</td>
+          <td>{{ p.categoria|capitalize }}</td>
+          <td>${{ "{:,.0f}".format(p.precio) }}</td>
+          <td>{{ p.stock }}</td>
+          <td>
+            {% if usuario_actual %}
+              <a class="btn-warning" href="{{ url_for('producto_editar', producto_id=p.id) }}">Editar</a>
+              <form class="inline-form" method="post" action="{{ url_for('producto_eliminar', producto_id=p.id) }}" onsubmit="return confirm('¿Eliminar producto?');">
+                <button type="submit" class="btn-danger">Eliminar</button>
+              </form>
+            {% else %}
+              Solo lectura
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div id="productosLista" class="productos-lista" style="margin-top: 30px;">
+    {% for p in productos %}
+      <div class="producto-item">
+        <img src="{{ p.imagen if p.imagen else url_for('static', filename='img/placeholder-product.png') }}" alt="{{ p.nombre }}">
+        <h3>{{ p.nombre }}</h3>
+        <div class="precio">${{ "{:,.0f}".format(p.precio) }}</div>
+        <p>{{ p.descripcion or 'Producto de V3E STORE' }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 V3E STORE - Todos los derechos reservados</p>
+</footer>
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>

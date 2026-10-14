@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto para Asesoría</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background: linear-gradient(135deg, #C78C62 0%, #F8C8DC 100%);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .contact-container {
+            max-width: 420px;
+            margin: 60px auto;
+            background: #fff8f3;
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(156, 78, 39, 0.15);
+            padding: 32px 28px 24px 28px;
+            border: 3px solid #C0834F;
+            position: relative;
+        }
+        .contact-container:before {
+            content: "";
+            position: absolute;
+            top: -30px; left: 30px;
+            width: 60px; height: 60px;
+            background: #F8C8DC;
+            border-radius: 50%;
+            z-index: 0;
+            box-shadow: 0 0 0 8px #C78C6233;
+        }
+        .contact-title { color: #9C4E27; font-size: 2rem; font-weight: bold; margin-bottom: 10px; text-align: center; letter-spacing: 1px; }
+        .contact-desc { color: #4D4A29; text-align: center; margin-bottom: 24px; font-size: 1.1rem; }
+        form { display: flex; flex-direction: column; gap: 16px; }
+        label { color: #6A7537; font-weight: 500; margin-bottom: 4px; }
+        input, textarea {
+            border: 2px solid #C0834F; border-radius: 8px; padding: 10px; font-size: 1rem; background: #fff;
+        }
+        input:focus, textarea:focus { border-color: #9C4E27; outline: none; }
+        button {
+            background: linear-gradient(90deg, #9C4E27 60%, #C78C62 100%);
+            color: #fff; border: none; border-radius: 8px; padding: 12px 0; font-size: 1.1rem; font-weight: bold; cursor: pointer;
+        }
+        .gmail-icon { display:block; margin:0 auto 10px auto; width:48px; height:48px; }
+    </style>
+</head>
+<body>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+    <div class="contact-container">
+        <div class="contact-title">Contacto para Asesoría</div>
+        <div class="contact-desc">Déjanos tu mensaje y te responderemos pronto.</div>
+        <form method="post">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" type="text" required>
+
+            <label for="email">Correo</label>
+            <input id="email" name="email" type="email" required>
+
+            <label for="asunto">Asunto</label>
+            <input id="asunto" name="asunto" type="text">
+
+            <label for="mensaje">Mensaje</label>
+            <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+
+            <button type="submit">Enviar</button>
+        </form>
+        <div class="top-links" style="margin-top:20px;">
+          <a href="{{ url_for('index') }}" class="btn-soft">Inicio</a>
+          <a href="{{ url_for('instagrampagina') }}" class="btn-soft">Instagram</a>
+        </div>
+    </div>
+</body>
+</html>

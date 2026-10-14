@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram - V3E Store</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='insta.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{{ url_for('index') }}">Inicio</a>
+            <a href="{{ url_for('productos') }}">Productos</a>
+            <a href="{{ url_for('instagrampagina') }}">Instagram</a>
+            <a href="{{ url_for('contacto') }}">Contacto</a>
+        </nav>
+        <a href="{{ url_for('index') }}" class="btn-volver">← Volver</a>
+        <h1>¡Síguenos en Instagram!</h1>
+    </header>
+
+    <main>
+        <section class="instagram-info">
+            <h2>Nuestra comunidad en Instagram</h2>
+            <p>
+                En nuestro Instagram publicamos fotos de nuestros productos,
+                promociones especiales y descuentos exclusivos para todos nuestros seguidores.
+            </p>
+            <p>
+                ¡Síguenos para estar al tanto de todas nuestras novedades y ofertas exclusivas!
+            </p>
+        </section>
+
+        <section class="instagram-actions">
+            <div class="instagram-card">
+                <div class="instagram-logo-circle">
+                    <img src="{{ url_for('static', filename='img/instagram-logo-instagram-icon-transparent-free-png.png') }}" alt="Instagram Logo" class="insta-logo">
+                </div>
+                <h2>Conecta con Nosotros</h2>
+                <a href="https://www.instagram.com/v3estore/" target="_blank" class="btn-externo">
+                    Llevar a Instagram
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 V3E Store. Todos los derechos reservados.</p>
+        <p>
+            <a href="{{ url_for('contacto') }}">Contacto</a>
+        </p>
+    </footer>
+</body>
+</html>

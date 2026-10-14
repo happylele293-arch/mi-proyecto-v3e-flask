@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>V3E STORE | Belleza y Estilo</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<header class="animate__animated animate__fadeInDown">
+  <h2 class="logo">V3E STORE</h2>
+  <nav>
+    <a href="{{ url_for('index') }}" class="categoria-alt">Inicio</a>
+    <a href="{{ url_for('productos') }}" class="categoria-btn">Productos</a>
+    <a href="{{ url_for('maquillaje') }}" class="categoria-btn">Maquillaje</a>
+    <a href="{{ url_for('ropa') }}" class="categoria-btn">Ropa</a>
+    <a href="{{ url_for('skincare') }}" class="categoria-btn">Skincare</a>
+    {% if usuario_actual %}
+      <a href="{{ url_for('dashboard') }}" class="categoria-alt">Dashboard</a>
+      <button id="logoutBtn" data-url="{{ url_for('logout') }}">Cerrar sesión</button>
+    {% else %}
+      <a href="{{ url_for('registro') }}" class="categoria-alt">Registro</a>
+      <a href="{{ url_for('login') }}" class="categoria-alt">Login</a>
+    {% endif %}
+  </nav>
+</header>
+
+<section class="hero-f-layout">
+  <div class="floating-blob blob-1"></div>
+  <div class="floating-blob blob-2"></div>
+
+  <div class="hero-content">
+    <h1 class="animate__animated animate__fadeInLeft">
+      Belleza, estilo y cuidado para ti
+    </h1>
+    <p class="animate__animated animate__fadeInLeft" style="animation-delay: 0.3s; color: #555; font-size: 1.2rem;">
+      Maquillaje, skincare y moda pensados para resaltar tu brillo natural en cada momento.
+    </p>
+    <div style="margin-top:25px;" class="animate__animated animate__zoomIn">
+      <a href="{{ url_for('productos') }}" class="cta-btn">Comprar Ahora</a>
+    </div>
+  </div>
+  <div class="hero-image-f animate__animated animate__fadeInRight">
+    <div class="banner-glass animate__animated animate__fadeInUp">
+      <img src="{{ url_for('static', filename='img/banner_maquillaje.png') }}" alt="V3E Beauty Collection">
+    </div>
+    <div class="hero-image-splash animate__animated animate__slideInRight">
+      <img src="{{ url_for('static', filename='img/maquillaje-removebg-preview.png') }}" alt="Splash Labial">
+    </div>
+  </div>
+</section>
+
+<section class="trust-bar">
+  <div class="trust-item">
+    <i class="fas fa-truck"></i>
+    <div class="trust-content">
+      <strong>Envío Gratis</strong>
+      <span>A partir de $100.000 COP</span>
+    </div>
+  </div>
+  <div class="trust-divider"></div>
+  <div class="trust-item">
+    <i class="fas fa-lock"></i>
+    <div class="trust-content">
+      <strong>Pago Seguro</strong>
+      <span>Wompi • Mercado Pago</span>
+    </div>
+  </div>
+  <div class="trust-divider"></div>
+  <div class="trust-item">
+    <i class="fas fa-undo"></i>
+    <div class="trust-content">
+      <strong>Devoluciones Fáciles</strong>
+      <span>Hasta 30 días</span>
+    </div>
+  </div>
+</section>
+
+<section class="quick-categories reveal-on-scroll">
+  <div class="cat-item" onclick="window.location.href='{{ url_for('maquillaje') }}'">
+    <div class="circle"><img src="{{ url_for('static', filename='img/maquillaje_rubor_11.jfif') }}" alt="Belleza"></div>
+    <strong>Maquillaje</strong>
+  </div>
+  <div class="cat-item" onclick="window.location.href='{{ url_for('skincare') }}'">
+    <div class="circle"><img src="{{ url_for('static', filename='img/product_1_skincare.jfif') }}" alt="Cuidado"></div>
+    <strong>Skincare</strong>
+  </div>
+  <div class="cat-item" onclick="window.location.href='{{ url_for('ropa') }}'">
+    <div class="circle"><img src="{{ url_for('static', filename='img/camisa_overcize_peluche_19.jfif') }}" alt="Moda"></div>
+    <strong>Moda</strong>
+  </div>
+</section>
+
+<section class="destacados-bar reveal-on-scroll">
+  <div class="container">
+    <h3 style="text-align:center; margin-bottom:30px;">Destacados</h3>
+    <div id="destacadosTrack">
+      {% for producto in destacados %}
+      <div class="product-card">
+        <img src="{{ producto.imagen if producto.imagen else url_for('static', filename='img/placeholder-product.png') }}" alt="{{ producto.nombre }}">
+        <div style="padding:18px;">
+          <h4>{{ producto.nombre }}</h4>
+          <p style="margin:10px 0; color:#8b4357;">{{ producto.categoria|capitalize }}</p>
+          <strong>${{ "{:,.0f}".format(producto.precio) }}</strong>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="vinculacion-section" style="padding:40px; text-align:center;">
+  <h2 style="margin-bottom:12px; color:#8b4357;">Conéctate con V3E STORE</h2>
+  <p style="margin-bottom:20px;">Explora nuestro catálogo, regístrate y gestiona el inventario desde el dashboard.</p>
+  <div class="top-links">
+    <a href="{{ url_for('productos') }}" class="btn-soft">Ver catálogo</a>
+    <a href="{{ url_for('contacto') }}" class="btn-soft">Contacto</a>
+    <a href="{{ url_for('instagrampagina') }}" class="btn-soft">Instagram</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 V3E Store. Todos los derechos reservados.</p>
+</footer>
+
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>
